@@ -47,18 +47,18 @@ d3.csv("dehydration_estimation.csv").then(function(data) {
         // Update time display
         d3.select("#time-display").text(`Time: ${timeIndex}`);
 
-        // Update temperature chart
-        updateChart(filteredData);
+        // Update temperature chart (pass timeIndex to move dotted line)
+        updateChart(filteredData, timeIndex);
     }
 
-    // Function to update temperature line chart
-    function updateChart(filteredData) {
+    // Function to update temperature line chart with dotted indicator
+    function updateChart(filteredData, timeIndex) {
         let svg = d3.select("#temperature-chart");
         svg.selectAll("*").remove(); // Clear previous chart
 
         // Define scales
-        let xScale = d3.scaleLinear().domain([0, 9]).range([50, 550]);
-        let yScale = d3.scaleLinear().domain([20, 40]).range([350, 50]);
+        let xScale = d3.scaleLinear().domain([0, 8]).range([50, 550]);  // Time intervals (0 to 8)
+        let yScale = d3.scaleLinear().domain([20, 40]).range([350, 50]); // Temperature range (20 to 40°C)
 
         let bodyParts = [
             "temperature ear [degree C]",
@@ -88,38 +88,79 @@ d3.csv("dehydration_estimation.csv").then(function(data) {
         // X-axis
         svg.append("g")
             .attr("transform", "translate(0, 350)")
-            .call(d3.axisBottom(xScale).ticks(9));
+            .call(d3.axisBottom(xScale).ticks(9))
+            .append("text")
+            .attr("x", 300)
+            .attr("y", 40)
+            .attr("fill", "black")
+            .style("text-anchor", "middle")
+            .text("Time Interval");
 
         // Y-axis
         svg.append("g")
             .attr("transform", "translate(50, 0)")
-            .call(d3.axisLeft(yScale));
+            .call(d3.axisLeft(yScale))
+            .append("text")
+            .attr("x", -200)
+            .attr("y", -40)
+            .attr("fill", "black")
+            .style("text-anchor", "middle")
+            .attr("transform", "rotate(-90)")
+            .text("Temperature (°C)");
 
-        // Legend
+        // Move legend outside the chart
+        let legend = svg.append("g")
+            .attr("transform", "translate(500 , 50)"); // Move legend fully to the right
+
         bodyParts.forEach((part, i) => {
-            svg.append("text")
-                .attr("x", 480)
-                .attr("y", 50 + i * 20)
-                .attr("fill", colors[i])
-                .text(part.replace("temperature ", "").replace(" [degree C]", ""))
-                .attr("transform", "translate(45, 50)");
+            legend.append("rect")
+                .attr("x", 0)
+                .attr("y", i * 20)
+                .attr("width", 12)
+                .attr("height", 12)
+                .attr("fill", colors[i]);
+
+            legend.append("text")
+                .attr("x", 20)
+                .attr("y", i * 20 + 10)
+                .attr("fill", "black")
+                .style("font-size", "12px")
+                .text(part.replace("temperature ", "").replace(" [degree C]", ""));
+        });
+
+        // Dotted line indicator (initial position)
+        let indicatorLine = svg.append("line")
+            .attr("x1", xScale(timeIndex))
+            .attr("x2", xScale(timeIndex))
+            .attr("y1", 50)
+            .attr("y2", 350)
+            .attr("stroke", "black")
+            .attr("stroke-dasharray", "5,5") // Makes the line dotted
+            .attr("stroke-width", 2);
+
+        // Store indicator line globally so it updates properly
+        d3.select("#time-slider").on("input", function() {
+            let newTime = +this.value;
+            let selectedId = +d3.select("#id-select").property("value");
+
+            // Move the indicator line
+            indicatorLine
+                .transition().duration(100)
+                .attr("x1", xScale(newTime))
+                .attr("x2", xScale(newTime));
+
+            // Update weight value & chart
+            updateData(selectedId, newTime);
         });
     }
 
     // Set default selection to ID 2 and time 0
     updateData(2, 0);
 
-    // Add event listeners for dropdown and slider
+    // Add event listeners for dropdown
     d3.select("#id-select").on("change", function() {
         let selectedId = +this.value;
         let timeIndex = +d3.select("#time-slider").property("value");
-        updateData(selectedId, timeIndex);
-    });
-
-
-    d3.select("#time-slider").on("input", function() {
-        let timeIndex = +this.value;
-        let selectedId = +d3.select("#id-select").property("value");
         updateData(selectedId, timeIndex);
     });
 
