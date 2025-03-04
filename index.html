@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HydroStats</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script defer src="main.js"></script>
+</head>
+<body>
+
+    <h1>Dehydration Data</h1>
+
+    <label for="id-select">Select ID:</label>
+    <select id="id-select">
+        <!-- Options will be dynamically inserted -->
+    </select>
+
+    <!-- Bullet point description -->
+    <div id="description">
+        <h2>Subject Details</h2>
+        <ul>
+            <li><strong>ID:</strong> <span id="id-display"></span></li>
+            <li><strong>Age:</strong> <span id="age-display"></span></li>
+            <li><strong>Height:</strong> <span id="height-display"></span></li>
+            <li><strong>Running Speed:</strong> <span id="speed-display"></span></li>
+        </ul>
+    </div>
+
+     <!-- Slider for time intervals -->
+     <label for="time-slider">Select Time Interval:</label>
+     <input type="range" id="time-slider" min="0" max="8" value="0">
+     <span id="time-display">Time: 0</span>
+
+    <!-- Display dehydration level (weight) -->
+    <h2>Dehydration Level</h2>
+    <p>Hydration level: <span id="weight-display"></span></p>
+
+    <!-- Temperature Line Chart -->
+    <h2>Temperature Change Over Time</h2>
+    <svg id="temperature-chart" width="600" height="400"></svg>
+
+    <table id="data-table" border="1">
+        <thead>
+            <tr id="table-header">
+                <!-- Column headers will be inserted dynamically -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Filtered data will be inserted here -->
+        </tbody>
+    </table>
+
+</body>
+</html>
