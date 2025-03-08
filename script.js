@@ -1,0 +1,142 @@
+document.addEventListener("DOMContentLoaded", function () {
+    const toggleOptions = document.querySelectorAll(".toggle-option");
+    const toggleBackground = document.querySelector(".toggle-background");
+    const dataBox = document.getElementById("data-box");
+    const intervalSlider = document.getElementById("interval-slider");
+    const intervalValueDisplay = document.getElementById("interval-value");
+
+    let globalData = [];
+    let selectedParticipant = 2; // Default participant
+    let selectedInterval = 0;    // Default running interval
+
+    // Define weight mapping (adjust these based on your data)
+    const minWeight = 0;
+    const maxWeight = 90;
+    const bottleFillAreaHeight = 240; // Bottle fill area: y=30 to y=270
+    const waveHeight = 0;            // Fixed height for the wavy top
+
+    // Color mapping for temperatures
+    function getColor(temp) {
+        if (temp < 30) return "#3d85c6";
+        if (temp < 33) return "#9fc5e8";
+        if (temp < 36) return "#e06666";
+        return "#cc0000";
+    }
+
+    // Update the sliding background for the toggle
+    function updateBackground() {
+        const selectedButton = document.querySelector(".toggle-option.selected");
+        if (!selectedButton) return;
+
+        const buttonWidth = selectedButton.offsetWidth;
+        const buttonLeft = selectedButton.offsetLeft;
+        const extraPadding = 12;
+        toggleBackground.style.width = `${buttonWidth + extraPadding}px`;
+        toggleBackground.style.transform = `translateX(${buttonLeft - extraPadding / 2}px)`;
+    }
+
+    // Update the water bottle fill based on dynamic weight
+    function updateWaterBottle(weight) {
+        // Clamp weight to the expected range
+        const clampedWeight = Math.max(minWeight, Math.min(maxWeight, weight));
+        // Compute total fill height relative to bottleFillAreaHeight
+        const totalFillHeight = ((clampedWeight - minWeight) / (maxWeight - minWeight)) * bottleFillAreaHeight;
+        // Bottle fill starts at y=30; so top of fill is:
+        const fillTopY = 30 + (bottleFillAreaHeight - totalFillHeight);
+
+        // Split into two parts:
+        // water-wave: top band with fixed height (or full height if totalFillHeight is very small)
+        const waveH = totalFillHeight > waveHeight ? waveHeight : totalFillHeight;
+        // water-fill-body: remainder below the wave (could be zero)
+        const bodyH = totalFillHeight > waveHeight ? totalFillHeight - waveHeight : 0;
+
+        // Update water-wave (wavy top edge)
+        d3.select("#water-wave")
+          .attr("y", fillTopY)
+          .attr("height", waveH);
+          
+        // Update water-fill-body (static part)
+        d3.select("#water-fill-body")
+          .attr("y", fillTopY + waveH)
+          .attr("height", bodyH);
+    }
+
+    // Update the SVG visualization, water bottle, and data box
+    function updateChart(participantId) {
+        // Get the static row (running interval 0) for age, speed, etc.
+        const staticRow = globalData.find(d => +d.id === participantId && +d["running interval"] === 0);
+        if (!staticRow) {
+            console.warn("No static data found for participant", participantId);
+            return;
+        }
+        
+        // Get the dynamic row for the current interval (or fall back to staticRow)
+        const dynamicRow = globalData.find(d => +d.id === participantId && +d["running interval"] === selectedInterval) || staticRow;
+
+        // Update the data box with static info and current interval
+        dataBox.innerHTML = `
+            <p><strong>Age:</strong> ${staticRow["age [years]"]} years</p>
+            <p><strong>Speed:</strong> ${staticRow["running speed [km/h]"]} km/h</p>
+            <p><strong>Weight:</strong> ${dynamicRow["weight measured using Kern DE 150K2D [kg]"]} kg</p>
+            <p><strong>Interval:</strong> ${selectedInterval}</p>
+        `;
+
+        // Update water bottle fill using dynamic weight
+        const dynamicWeight = +dynamicRow["weight measured using Kern DE 150K2D [kg]"];
+        updateWaterBottle(dynamicWeight);
+
+        // Parse temperature values from dynamicRow
+        const earTemp   = +dynamicRow["temperature ear [degree C]"];
+        const chestTemp = +dynamicRow["temperature chest [degree C]"];
+        const backTemp  = +dynamicRow["temperature back [degree C]"];
+        const leftHand  = +dynamicRow["temperature left hand [degree C]"];
+        const rightHand = +dynamicRow["temperature right hand [degree C]"];
+        const leftFoot  = +dynamicRow["temperature left foot [degree C]"];
+        const rightFoot = +dynamicRow["temperature right foot [degree C]"];
+        const upperArm  = +dynamicRow["temperature upper arm [degree C]"];
+        const lowerArm  = +dynamicRow["temperature lower arm [degree C]"];
+        const upperLeg  = +dynamicRow["temperature upper leg [degree C]"];
+        const lowerLeg  = +dynamicRow["temperature lower leg [degree C]"];
+
+        // Update human SVG colors
+        d3.select("#head").attr("fill", getColor(earTemp));
+        const avgTorso = (chestTemp + backTemp) / 2;
+        d3.select("#torso").attr("fill", getColor(avgTorso));
+        d3.select("#leftArm").attr("fill", getColor(leftHand));
+        d3.select("#rightArm").attr("fill", getColor(rightHand));
+        const avgLeg = (upperLeg + lowerLeg) / 2;
+        d3.select("#leftLeg").attr("fill", getColor(avgLeg));
+        d3.select("#rightLeg").attr("fill", getColor(avgLeg));
+        d3.select("#leftFoot").attr("fill", getColor(leftFoot));
+        d3.select("#rightFoot").attr("fill", getColor(rightFoot));
+    }
+
+    // Load the CSV data once
+    d3.csv("data.csv").then(function (data) {
+        globalData = data;
+        updateChart(selectedParticipant);
+    });
+
+    // Update slider display and chart when slider changes
+    intervalSlider.addEventListener("input", function () {
+        selectedInterval = +this.value;
+        intervalValueDisplay.textContent = this.value;
+        updateChart(selectedParticipant);
+    });
+
+    // Update toggle background on window resize
+    window.addEventListener("resize", updateBackground);
+    updateBackground();
+
+    // Set up click handlers for participant toggle options
+    toggleOptions.forEach(option => {
+        option.addEventListener("click", function () {
+            toggleOptions.forEach(btn => btn.classList.remove("selected"));
+            this.classList.add("selected");
+
+            selectedParticipant = parseInt(this.dataset.participant, 10);
+            updateBackground();
+            updateChart(selectedParticipant);
+        });
+    });
+});

@@ -1,0 +1,138 @@
+/* Basic page styling (optional) */
+body {
+    font-family: sans-serif;
+    margin: 30px;
+    text-align: center;
+    padding: 20px;
+    background-image: linear-gradient(to bottom right, rgb(255, 231, 231), rgb(255, 255, 203));
+}
+
+/* Container for the toggle */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    background-color: #ffffff;
+    border-radius: 999px;
+    padding: 4px;
+    user-select: none;
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2));
+}
+
+/* The sliding highlight background */
+.toggle-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #007bff;
+    border-radius: 999px;
+    z-index: 1;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+/* Each button */
+.toggle-option {
+    position: relative;
+    display: inline-block;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 999px;
+    z-index: 2;
+    transition: transform 0.3s ease, width 0.3s ease;
+}
+
+/* The currently selected button gets white text (for example) */
+.toggle-option.selected {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.toggle-option:hover {
+    font-style: italic;
+}
+
+
+/* Data Box Styling */
+#data-box {
+    margin: 20px auto;
+    padding: 10px;
+    border: 1px solid hsl(0, 0%, 87%);
+    background-color: #f9f9f9;
+    width: 200px;
+    text-align: center;
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2));
+    border-radius: 20px;
+}
+
+
+/* Overall SVG container style */
+#human-svg {
+    display: block;
+    margin: 0 auto;
+    background: #f9f9f9;
+    filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2));
+    border-radius: 40px;
+}
+
+/* Common style for all human body parts */
+#human-svg circle,
+#human-svg rect,
+#human-svg ellipse {
+    stroke: #49423d;
+    stroke-width: 2px;
+    transition: fill 0.3s ease, transform 0.3s ease;
+}
+
+/* Add rounded corners to rectangular elements for a more organic feel */
+#torso,
+#leftArm,
+#rightArm,
+#leftLeg,
+#rightLeg {
+    rx: 10;
+    ry: 10;
+}
+
+/* Enhance head styling */
+#head {
+    animation: breathing 3s ease-in-out infinite;
+}
+
+/* Hover effect on limbs for interactivity */
+#leftArm:hover,
+#rightArm:hover,
+#leftLeg:hover,
+#rightLeg:hover,
+#head:hover,
+#leftFoot:hover,
+#rightFoot:hover,
+#torso:hover {
+    fill: #f0c2a0;
+}
+
+/* Breathing animation for the head */
+@keyframes breathing {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
+}
+
+
+/* Slider Container Styling */
+#slider-container {
+    margin: 20px auto;
+}
+
+
+/* Visualization Container: display water bottle and human side-by-side */
+#visualization-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+}
