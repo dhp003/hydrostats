@@ -43,39 +43,21 @@
     <!-- The SVG code from your human_body.svg (inline or embedded) -->
 
     <div id="visualization-container">
-        <!-- Water Bottle SVG -->
-            <svg id="water-bottle-svg" width="100" height="300" viewBox="0 0 100 300">
-                <defs>
-                    <!-- SVG filter for a wavy (liquid) effect -->
-                    <filter id="wavy">
-                        <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise">
-                            <animate attributeName="baseFrequency" dur="5s" values="0.02;0.05;0.02"
-                                repeatCount="indefinite" />
-                        </feTurbulence>
-                        <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" />
-                    </filter>
-                </defs>
-                <!-- Bottle Cap -->
-                <rect id="bottle-cap" x="30" y="10" width="40" height="20" fill="#999" />
-                <!-- Bottle Outline -->
-                <rect id="bottle-outline" x="20" y="30" width="60" height="240" fill="none" stroke="black"
-                    stroke-width="2" />
-                <!-- Water Fill Body: the static fill (no filter) -->
-                <rect id="water-fill-body" x="20" y="270" width="60" height="0" fill="#9fc5e8" />
-                <!-- Water Wave: the top band with wavy effect -->
-                <rect id="water-wave" x="20" y="270" width="60" height="0" fill="#9fc5e8" filter="url(#wavy)" />
-            </svg>
+        <!-- Cup (Water Bottle) on the left -->
+        <div id="water-bottle" class="cup">
+            <div class="wave"></div>
+        </div>
 
-            <svg id="human-svg" viewBox="0 0 300 500" width="300" height="600">
-                <circle id="head" cx="150" cy="80" r="40" />
-                <rect id="torso" x="110" y="120" width="80" height="150" />
-                <rect id="leftArm" x="50" y="120" width="40" height="120" />
-                <rect id="rightArm" x="210" y="120" width="40" height="120" />
-                <rect id="leftLeg" x="110" y="270" width="30" height="150" />
-                <rect id="rightLeg" x="160" y="270" width="30" height="150" />
-                <ellipse id="leftFoot" cx="125" cy="440" rx="15" ry="10" />
-                <ellipse id="rightFoot" cx="175" cy="440" rx="15" ry="10" />
-            </svg>
+        <svg id="human-svg" viewBox="0 0 300 500" width="300" height="600">
+            <circle id="head" cx="150" cy="80" r="40" />
+            <rect id="torso" x="110" y="120" width="80" height="150" />
+            <rect id="leftArm" x="50" y="120" width="40" height="120" />
+            <rect id="rightArm" x="210" y="120" width="40" height="120" />
+            <rect id="leftLeg" x="110" y="270" width="30" height="150" />
+            <rect id="rightLeg" x="160" y="270" width="30" height="150" />
+            <ellipse id="leftFoot" cx="125" cy="440" rx="15" ry="10" />
+            <ellipse id="rightFoot" cx="175" cy="440" rx="15" ry="10" />
+        </svg>
     </div>
 
 

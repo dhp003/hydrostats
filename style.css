@@ -130,9 +130,67 @@ body {
 }
 
 
-/* Visualization Container: display water bottle and human side-by-side */
-#visualization-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 0;
+/* Cup styling for the water bottle */
+.cup {
+    position: relative;
+    width: 200px;
+    height: 250px;
+    margin-top: 20px;
+    border: 5px solid white;
+    border-top: none;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-radius: 35px;
+    box-shadow: inset 0 0 0 5px #000;
+    overflow: hidden;
+}
+
+/* Wave element with liquid effect (only rotating, not rising) */
+.wave {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Height will be set dynamically (fill percentage) */
+    height: 0%;
+    /* background: rgb(12, 10, 139); */
+    /* box-shadow: inset 0 0 0 5px #000; */
+    border-radius: 30px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+/* Remove the vertical "rise" animation */
+.wave:before,
+.wave:after {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: 0;
+    /* Fixed top position */
+    left: 50%;
+    transform: translate(-50%, 0);
+    background: black;
+}
+
+.wave:before {
+    border-radius: 45%;
+    animation: animate 2.5s linear infinite;
+    background: rgb(0, 2, 145);
+}
+
+.wave:after {
+    border-radius: 40%;
+    animation: animate 2.5s linear infinite;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes animate {
+    0% {
+        transform: translate(-50%, 0) rotate(0deg);
+    }
+
+    100% {
+        transform: translate(-50%, 0) rotate(360deg);
+    }
 }

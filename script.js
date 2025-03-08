@@ -4,16 +4,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const dataBox = document.getElementById("data-box");
     const intervalSlider = document.getElementById("interval-slider");
     const intervalValueDisplay = document.getElementById("interval-value");
+    const waveEl = document.querySelector(".wave");
 
     let globalData = [];
     let selectedParticipant = 2; // Default participant
     let selectedInterval = 0;    // Default running interval
 
     // Define weight mapping (adjust these based on your data)
-    const minWeight = 0;
-    const maxWeight = 90;
-    const bottleFillAreaHeight = 240; // Bottle fill area: y=30 to y=270
-    const waveHeight = 0;            // Fixed height for the wavy top
+    const minWeight = 70;  // Minimum expected weight (kg)
+    const maxWeight = 90;  // Maximum expected weight (kg)
 
     // Color mapping for temperatures
     function getColor(temp) {
@@ -35,45 +34,30 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleBackground.style.transform = `translateX(${buttonLeft - extraPadding / 2}px)`;
     }
 
-    // Update the water bottle fill based on dynamic weight
-    function updateWaterBottle(weight) {
-        // Clamp weight to the expected range
+    // Update the cup fill level (the .wave element) based on dynamic weight.
+    // Here we map the weight to a percentage fill of the cup.
+    function updateWaterCup(weight) {
+        // Clamp weight to our expected range.
         const clampedWeight = Math.max(minWeight, Math.min(maxWeight, weight));
-        // Compute total fill height relative to bottleFillAreaHeight
-        const totalFillHeight = ((clampedWeight - minWeight) / (maxWeight - minWeight)) * bottleFillAreaHeight;
-        // Bottle fill starts at y=30; so top of fill is:
-        const fillTopY = 30 + (bottleFillAreaHeight - totalFillHeight);
-
-        // Split into two parts:
-        // water-wave: top band with fixed height (or full height if totalFillHeight is very small)
-        const waveH = totalFillHeight > waveHeight ? waveHeight : totalFillHeight;
-        // water-fill-body: remainder below the wave (could be zero)
-        const bodyH = totalFillHeight > waveHeight ? totalFillHeight - waveHeight : 0;
-
-        // Update water-wave (wavy top edge)
-        d3.select("#water-wave")
-          .attr("y", fillTopY)
-          .attr("height", waveH);
-          
-        // Update water-fill-body (static part)
-        d3.select("#water-fill-body")
-          .attr("y", fillTopY + waveH)
-          .attr("height", bodyH);
+        // Calculate fill percentage: 0% at minWeight, 100% at maxWeight.
+        const fillPercent = ((clampedWeight - minWeight) / (maxWeight - minWeight)) * 100;
+        // Set the .wave element height accordingly.
+        waveEl.style.height = `${fillPercent}%`;
     }
 
-    // Update the SVG visualization, water bottle, and data box
+    // Update the SVG visualization, cup fill, and data box.
     function updateChart(participantId) {
-        // Get the static row (running interval 0) for age, speed, etc.
+        // Get the static row (running interval 0) for static info.
         const staticRow = globalData.find(d => +d.id === participantId && +d["running interval"] === 0);
         if (!staticRow) {
             console.warn("No static data found for participant", participantId);
             return;
         }
         
-        // Get the dynamic row for the current interval (or fall back to staticRow)
+        // Get the dynamic row for the current interval (or fall back to staticRow).
         const dynamicRow = globalData.find(d => +d.id === participantId && +d["running interval"] === selectedInterval) || staticRow;
 
-        // Update the data box with static info and current interval
+        // Update the data box (using static info for age and speed, dynamic weight).
         dataBox.innerHTML = `
             <p><strong>Age:</strong> ${staticRow["age [years]"]} years</p>
             <p><strong>Speed:</strong> ${staticRow["running speed [km/h]"]} km/h</p>
@@ -81,11 +65,11 @@ document.addEventListener("DOMContentLoaded", function () {
             <p><strong>Interval:</strong> ${selectedInterval}</p>
         `;
 
-        // Update water bottle fill using dynamic weight
+        // Update the cup fill based on dynamic weight.
         const dynamicWeight = +dynamicRow["weight measured using Kern DE 150K2D [kg]"];
-        updateWaterBottle(dynamicWeight);
+        updateWaterCup(dynamicWeight);
 
-        // Parse temperature values from dynamicRow
+        // Parse temperature values from dynamicRow.
         const earTemp   = +dynamicRow["temperature ear [degree C]"];
         const chestTemp = +dynamicRow["temperature chest [degree C]"];
         const backTemp  = +dynamicRow["temperature back [degree C]"];
@@ -98,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const upperLeg  = +dynamicRow["temperature upper leg [degree C]"];
         const lowerLeg  = +dynamicRow["temperature lower leg [degree C]"];
 
-        // Update human SVG colors
+        // Update human SVG colors based on temperature values.
         d3.select("#head").attr("fill", getColor(earTemp));
         const avgTorso = (chestTemp + backTemp) / 2;
         d3.select("#torso").attr("fill", getColor(avgTorso));
@@ -111,24 +95,24 @@ document.addEventListener("DOMContentLoaded", function () {
         d3.select("#rightFoot").attr("fill", getColor(rightFoot));
     }
 
-    // Load the CSV data once
+    // Load the CSV data once.
     d3.csv("data.csv").then(function (data) {
         globalData = data;
         updateChart(selectedParticipant);
     });
 
-    // Update slider display and chart when slider changes
+    // Update slider display and chart when the slider changes.
     intervalSlider.addEventListener("input", function () {
         selectedInterval = +this.value;
         intervalValueDisplay.textContent = this.value;
         updateChart(selectedParticipant);
     });
 
-    // Update toggle background on window resize
+    // Update toggle background on window resize.
     window.addEventListener("resize", updateBackground);
     updateBackground();
 
-    // Set up click handlers for participant toggle options
+    // Set up click handlers for participant toggle options.
     toggleOptions.forEach(option => {
         option.addEventListener("click", function () {
             toggleOptions.forEach(btn => btn.classList.remove("selected"));
