@@ -15,7 +15,7 @@ d3.csv("dehydration_estimation.csv").then(function(data) {
     });
 
     // Restrict dropdown to only IDs 2, 7, and 8
-    let allowedIds = [2, 7, 8];
+    let allowedIds = [2, 7, 8, 5];
 
     // Populate the dropdown menu
     let dropdown = d3.select("#id-select");
@@ -26,30 +26,52 @@ d3.csv("dehydration_estimation.csv").then(function(data) {
         .text(d => `ID ${d}`)
         .attr("value", d => d);
 
-    // Function to update data when ID or time changes
-    function updateData(selectedId, timeIndex) {
-        let filteredData = data.filter(d => d.id === selectedId);
-        console.log("Filtered Data:", filteredData);
+function updateData(selectedId, timeIndex) {
+    let filteredData = data.filter(d => d.id === selectedId);
+    console.log("Filtered Data:", filteredData);
 
-        // Get subject details
-        let subjectDetails = filteredData[0];
+    // Get subject details
+    let subjectDetails = filteredData[0];
 
-        // Update bullet point description
-        d3.select("#id-display").text(subjectDetails.id);
-        d3.select("#age-display").text(subjectDetails["age [years]"]);
-        d3.select("#height-display").text(subjectDetails["height [cm]"]);
-        d3.select("#speed-display").text(subjectDetails["running speed [km/h]"]);
+    // Update bullet point description
+    d3.select("#id-display").text(subjectDetails.id);
+    d3.select("#age-display").text(subjectDetails["age [years]"]);
+    d3.select("#height-display").text(subjectDetails["height [cm]"]);
+    d3.select("#speed-display").text(subjectDetails["running speed [km/h]"]);
 
-        // Update dehydration level (weight)
-        let weightValue = filteredData[timeIndex]["weight measured using Kern DE 150K2D [kg]"];
-        d3.select("#weight-display").text(weightValue.toFixed(2));
+    // Update dehydration level (weight)
+    let weightValue = filteredData[timeIndex]["weight measured using Kern DE 150K2D [kg]"];
+    d3.select("#weight-display").text(weightValue.toFixed(2));
 
-        // Update time display
-        d3.select("#time-display").text(`Time: ${timeIndex}`);
+    // Update time display
+    d3.select("#time-display").text(`Time: ${timeIndex}`);
 
-        // Update temperature chart (pass timeIndex to move dotted line)
-        updateChart(filteredData, timeIndex);
-    }
+    // Update temperature chart (pass timeIndex to move dotted line)
+    updateChart(filteredData, timeIndex);
+
+    // === Water Bottle Animation Fix === //
+
+    let minHydration = 75;  // Lowest hydration value
+    let maxHydration = 90;  // Highest hydration value
+    let maxWaterHeight = 160;  // Maximum height of water inside the bottle
+    let bottleBottomY = 180; // Y position of bottle bottom
+
+    // Ensure a minimum water height so it never disappears
+    let waterHeight = ((weightValue - minHydration) / (maxHydration - minHydration)) * maxWaterHeight;
+    waterHeight = Math.max(10, Math.min(maxWaterHeight, waterHeight)); // At least 10px high
+
+    // The fix: Ensure `y` position places the water at the bottom!
+    let newWaterY = bottleBottomY - waterHeight;
+
+    // Animate water level
+    d3.select("#water-level")
+        .transition()
+        .duration(300)
+        .attr("y", newWaterY) // Moves the water up correctly
+        .attr("height", waterHeight); // Adjusts water fill smoothly
+}
+
+
 
     // Function to update temperature line chart with dotted indicator
     function updateChart(filteredData, timeIndex) {
@@ -167,3 +189,4 @@ d3.csv("dehydration_estimation.csv").then(function(data) {
 }).catch(function(error) {
     console.error("Error loading the CSV file:", error);
 });
+

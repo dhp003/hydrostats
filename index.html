@@ -10,7 +10,7 @@
 </head>
 <body>
 
-    <h1>Dehydration Data</h1>
+    <h1>Dehydration and Temperature Data during Cardio</h1>
 
     <label for="id-select">Select ID:</label>
     <select id="id-select">
@@ -36,6 +36,16 @@
     <!-- Display dehydration level (weight) -->
     <h2>Dehydration Level</h2>
     <p>Hydration level: <span id="weight-display"></span></p>
+    <h2>Hydration Level</h2>
+    <div id="water-bottle-container">
+        <svg id="water-bottle" width="80" height="200" viewBox="0 0 80 200">
+            <!-- Bottle Outline with Rounded Corners -->
+            <rect x="15" y="5" width="50" height="190" stroke="#0078d7" fill="none" stroke-width="3" rx="15" ry="15"/>
+        
+            <!-- Water Level (Will Change Dynamically) -->
+            <rect id="water-level" x="17" y="180" width="46" height="0" fill="#0078d7" rx="10" ry="10"/>
+        </svg>
+    </div>
 
     <!-- Temperature Line Chart -->
     <h2>Temperature Change Over Time</h2>
@@ -51,6 +61,30 @@
             <!-- Filtered data will be inserted here -->
         </tbody>
     </table>
+
+    <h2>Body Temperature Visualization</h2>
+    <div id="body-container">
+        <svg id="body-svg" width="200" height="400" viewBox="0 0 200 400">
+            <!-- Head -->
+            <circle id="ear" cx="100" cy="40" r="25" stroke="black" fill="green"/>
+    
+            <!-- Body -->
+            <rect id="chest" x="65" y="70" width="70" height="120" stroke="black" fill="green" rx="20" ry="20"/>
+    
+            <!-- Arms -->
+            <rect id="left-hand" x="30" y="90" width="30" height="90" stroke="black" fill="green" rx="15" ry="15"/>
+            <rect id="right-hand" x="140" y="90" width="30" height="90" stroke="black" fill="green" rx="15" ry="15"/>
+    
+            <!-- Legs -->
+            <rect id="left-foot" x="75" y="190" width="25" height="100" stroke="black" fill="green" rx="10" ry="10"/>
+            <rect id="right-foot" x="100" y="190" width="25" height="100" stroke="black" fill="green" rx="10" ry="10"/>
+        </svg>
+
+    <!-- Placeholder for the temperature graph -->
+    <div id="temperature-tooltip" class="hidden">
+        <svg id="temperature-graph" width="250" height="150"></svg>
+    </div>
+    </div>
 
 </body>
 </html>

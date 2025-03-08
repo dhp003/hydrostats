@@ -1,7 +1,172 @@
+/* General body styling */
 body {
-    /* Set line height to 1.5 times the font size and use the OS’s UI font */
-    font: 100%/1.5 system-ui;
-    max-width: 100ch;
-    margin-inline: max(1em, (100% - 100ch) / 2);
-    padding-inline: 1em; 
-  }
+  font: 100%/1.5 system-ui;
+  max-width: 100ch;
+  margin-inline: max(1em, (100% - 100ch) / 2);
+  padding-inline: 1em;
+  background: #ffffff; /* Keep it clean white */
+  color: #333;
+}
+
+/* Headings */
+h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* Dropdown container */
+#id-select {
+  font: 100%/1.5 system-ui;
+  padding: 8px;
+  width: 220px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f8f9fa;
+  transition: all 0.3s ease-in-out;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+#id-select:hover {
+  border-color: #0076d73c;
+  background: #ffffff;
+}
+
+/* Subject Details Box */
+#description {
+  background: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 6px;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
+  width: fit-content;
+  min-width: 280px;
+  margin-bottom: 25px;
+}
+
+#description ul {
+  list-style-type: none;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+#description li {
+  padding: 4px 0;
+  font-weight: 500;
+}
+
+/* Time Interval Heading */
+#time-interval-heading {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+/* Smaller, Filter-Style Slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 250px;
+  height: 5px;
+  border-radius: 3px;
+  background: #0078d7;
+  outline: none;
+  transition: 0.3s;
+  margin-bottom: 25px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #ffffff;
+  border: 2px solid #0078d7;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+input[type="range"]:hover {
+  background: #005bb5;
+}
+
+/* Hydration Level Display */
+#weight-display {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  background: #f8f9fa;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Graph Integration */
+#temperature-chart {
+  display: block;
+  margin-top: 30px;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 10px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Legend */
+.legend-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.legend-box div {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+/* Footer */
+footer {
+  font-size: 0.9rem;
+  color: #666;
+  padding: 20px;
+}
+
+/* Water Bottle Container */
+#water-bottle-container {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Water Bottle SVG */
+#water-bottle {
+  display: block;
+  margin-left: 0;
+}
+
+
+#body-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+#body-svg {
+  cursor: pointer;
+}
+
