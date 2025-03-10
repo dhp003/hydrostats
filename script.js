@@ -34,6 +34,22 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleBackground.style.transform = `translateX(${buttonLeft - extraPadding / 2}px)`;
     }
 
+    //Create y-axis for the water-cup
+    function makeAxis() {
+        const svg = d3.select("#axis");
+        const yScale = d3.scaleLinear()
+            .domain([minWeight, maxWeight])
+            .range([250, 0]);
+
+        console.log(minWeight, maxWeight);
+        svg.append('g')
+            .attr('class', 'gridlines')
+            .attr('transform', `translate(${50}, 32)`)
+            .call(d3.axisLeft().scale(yScale));
+    }
+
+    makeAxis();
+
     // Update the cup fill level (the .wave element) based on dynamic weight.
     // Here we map the weight to a percentage fill of the cup.
     function updateWaterCup(weight) {
@@ -116,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "running speed [km/h]": +d["running speed [km/h]"]
         }));
 
+        
         updateChart(selectedParticipant);
 
         // tooltip
@@ -165,7 +182,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .on("mouseleave", function() {
                 tooltip.classed("hidden", true).classed("visible", false);
             });
-            });
+    });
+
 
             // Update slider display and chart when the slider changes.
             intervalSlider.addEventListener("input", function () {

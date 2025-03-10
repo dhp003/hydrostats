@@ -68,10 +68,11 @@ body {
 /* Overall SVG container style */
 #human-svg {
     display: block;
-    margin: 0 auto;
+    margin: 30px;
     background: #f9f9f9;
     filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2));
     border-radius: 40px;
+    justify-self: start;
 }
 
 /* Common style for all human body parts */
@@ -135,7 +136,8 @@ body {
     position: relative;
     width: 200px;
     height: 250px;
-    margin-top: 20px;
+    margin-top: 30px;
+    margin-right: 30px;
     border: 5px solid white;
     border-top: none;
     border-top-left-radius: 2px;
@@ -143,6 +145,8 @@ body {
     border-radius: 35px;
     box-shadow: inset 0 0 0 5px #000;
     overflow: hidden;
+    justify-self: end;
+    align-self: start;
 }
 
 /* Wave element with liquid effect (only rotating, not rising) */
@@ -216,4 +220,21 @@ body {
     opacity: 1;
     visibility: visible;
     transform: scale(1);
+}
+
+#visualization-container {
+    display : grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}
+#water-container {
+    display : grid;
+    grid-template-columns: 1fr 254px;
+    align-items : end;
+    align-self : end;
+}
+
+#axis {
+    justify-self: end;
+    margin-bottom: 60px;
 }
