@@ -49,15 +49,21 @@
         </div>
 
         <svg id="human-svg" viewBox="0 0 300 500" width="300" height="600">
-            <circle id="head" cx="150" cy="80" r="40" />
+            <circle id="head" cx="150" cy="70" r="40" />
             <rect id="torso" x="110" y="120" width="80" height="150" />
-            <rect id="leftArm" x="50" y="120" width="40" height="120" />
-            <rect id="rightArm" x="210" y="120" width="40" height="120" />
-            <rect id="leftLeg" x="110" y="270" width="30" height="150" />
-            <rect id="rightLeg" x="160" y="270" width="30" height="150" />
-            <ellipse id="leftFoot" cx="125" cy="440" rx="15" ry="10" />
-            <ellipse id="rightFoot" cx="175" cy="440" rx="15" ry="10" />
+            <rect id="leftArm" x="60" y="105" width="25" height="140" />
+            <rect id="rightArm" x="215" y="105" width="25" height="140" />
+            <rect id="leftLeg" x="110" y="280" width="30" height="150" />
+            <rect id="rightLeg" x="160" y="280" width="30" height="150" />
+            <ellipse id="leftFoot" cx="125" cy="440" rx="20" ry="15" />
+            <ellipse id="rightFoot" cx="175" cy="440" rx="20" ry="15" />
         </svg>
+    </div>
+
+    <!-- Tooltip for showing temperature trends -->
+    <div id="temperature-tooltip" class="tooltip hidden">
+        <h4 id="tooltip-title">Temperature Trend</h4>
+        <svg id="tooltip-chart" width="250" height="150"></svg>
     </div>
 
 

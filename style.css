@@ -194,3 +194,26 @@ body {
         transform: translate(-50%, 0) rotate(360deg);
     }
 }
+
+.tooltip {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 8px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+    transform: scale(0.9);
+}
+
+.tooltip.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.9);
+}
+
+.tooltip.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+}
