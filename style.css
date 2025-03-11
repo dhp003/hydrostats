@@ -239,34 +239,41 @@ body {
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    text-align: left; /* Ensures all text is left-aligned */
+    text-align: left;
+    /* Ensures all text is left-aligned */
 }
 
 #info-section h1 {
     font-size: 26px;
     color: #333;
     margin-bottom: 15px;
-    text-align: left; /* Left-aligns the heading */
+    text-align: left;
+    /* Left-aligns the heading */
 }
 
 #info-section h2 {
     font-size: 22px;
     color: #0078d7;
     margin-top: 20px;
-    text-align: left; /* Left-aligns subheadings */
+    text-align: left;
+    /* Left-aligns subheadings */
 }
 
 #info-section h3 {
     font-size: 18px;
     color: #005bb5;
     margin-top: 15px;
-    text-align: left; /* Left-aligns sub-subheadings */
+    text-align: left;
+    /* Left-aligns sub-subheadings */
 }
 
-#info-section p, #info-section ul, #info-section pre {
+#info-section p,
+#info-section ul,
+#info-section pre {
     font-size: 16px;
     color: #444;
-    text-align: left; /* Left-aligns all paragraphs, lists, and code blocks */
+    text-align: left;
+    /* Left-aligns all paragraphs, lists, and code blocks */
 }
 
 #info-section ul {
@@ -281,11 +288,15 @@ body {
     overflow-x: auto;
     font-family: monospace;
     font-size: 14px;
-    white-space: normal;  /* Ensures text wraps */
-    word-wrap: break-word; /* Breaks long text properly */
+    white-space: normal;
+    /* Ensures text wraps */
+    word-wrap: break-word;
+    /* Breaks long text properly */
     text-align: left;
-    max-width: 100%;  /* Ensures it doesn't stretch too wide */
-    display: inline-block; /* Makes it only as wide as needed */
+    max-width: 100%;
+    /* Ensures it doesn't stretch too wide */
+    display: inline-block;
+    /* Makes it only as wide as needed */
 }
 
 @media (max-width: 768px) {
@@ -299,7 +310,8 @@ body {
 
 #welcome-header {
     text-align: center;
-    font-family: 'Orbitron', sans-serif; /* Futuristic, sleek font */
+    font-family: 'Orbitron', sans-serif;
+    /* Futuristic, sleek font */
     font-size: 42px;
     font-weight: 800;
     margin-top: 30px;
@@ -309,16 +321,50 @@ body {
 }
 
 #welcome-header h1 {
-    color: transparent; /* Makes the text hollow */
-    -webkit-text-stroke: 1.5px #66c2ff; /* Softer outline effect */
+    color: transparent;
+    /* Makes the text hollow */
+    -webkit-text-stroke: 1.5px #66c2ff;
+    /* Softer outline effect */
     text-stroke: 1.5px #66c2ff;
-    text-shadow: 0 0 6px rgba(102, 194, 255, 0.5), 0 0 10px rgba(51, 153, 255, 0.3); /* Softer glow */
+    text-shadow: 0 0 6px rgba(102, 194, 255, 0.5), 0 0 10px rgba(51, 153, 255, 0.3);
+    /* Softer glow */
 }
 
 #welcome-header span {
     color: transparent;
-    -webkit-text-stroke: 1.5px #559bd3; /* Slightly darker blue for contrast */
+    -webkit-text-stroke: 1.5px #559bd3;
+    /* Slightly darker blue for contrast */
     text-stroke: 1.5px #559bd3;
     text-shadow: 0 0 6px rgba(85, 155, 211, 0.5), 0 0 10px rgba(45, 116, 187, 0.3);
 }
 
+
+.team-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to right, #007bff, #66c2ff);
+    box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.2);
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    z-index: 1000;
+}
+
+/* Anchor styles for team names */
+.team-bar a {
+    color: white;
+    text-decoration: none;
+    transition: transform 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+.team-bar a:hover {
+    color: #ffffff;
+    transform: scale(1.05);
+}

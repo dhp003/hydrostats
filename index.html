@@ -16,135 +16,160 @@
     </div>
 
     <h2>How Much Water Do You Lose During Cardio?</h1>
-        
-    <div id="info-section">
 
-        <h2>Overview</h2>
-        <p>The aim of this interactive visualization is to help users explore the relationship between <strong>dehydration levels, body temperature, and running speed</strong> over time using real data. The visualization dynamically updates based on selected individuals and time intervals, showing changes in <strong>hydration levels</strong> and <strong>body temperature distribution</strong> across different body parts.</p>
-    
-        <h2>Data Source</h2>
-        <p>The data comes from the <strong>PhysioNet Quantitative Dehydration Estimation dataset</strong>, which records <strong>physiological changes during prolonged physical exertion</strong>. Each measurement was taken at an interval of <strong>15 minutes</strong> and includes:</p>
-        <ul>
-            <li><strong>Body weight measurements</strong> using a high-precision scale.</li>
-            <li><strong>Body temperature readings</strong> from eight key areas:
-                <ul>
-                    <li>Ear</li>
-                    <li>Left & Right Hand</li>
-                    <li>Left & Right Legs</li>
-                    <li>Left & Right Foot</li>
-                    <li>Chest</li>
-                </ul>
-            </li>
-            <li><strong>Dehydration tracking</strong> by loss in weight using <strong>Kern DE 150K2D [kg]</strong> (difference in body weight is assumed to be equal to total body water loss).</li>
-        </ul>
-    
-        <h2>How to Use This Dashboard</h2>
-    
-        <h3>1️⃣ Select a Subject</h3>
-        <p>Use the <strong>slider</strong> to select an avatar of your liking. The demographic details of each subject are listed in the description box.</p>
-    
-        <h3>2️⃣ Adjust the Time Slider</h3>
-        <ul>
-            <li>Move the <strong>time slider</strong> to see changes in hydration level and temperature over the <strong>8 time intervals.</strong></li>
-            <li>The <strong>hydration level (body weight)</strong> and <strong>body temperature</strong> will update in real time.</li>
-        </ul>
-    
-        <h3>3️⃣ Observe the Change in Water Levels</h3>
-        <ul>
-            <li>The <strong>water bottle represents hydration levels.</strong></li>
-            <li>As dehydration progresses, <strong>the water level decreases.</strong></li>
-        </ul>
-    
-        <h3>4️⃣ Body Temperature Changes Over Time</h3>
-        <ul>
-            <li>The <strong>human figure represents body temperature distribution.</strong></li>
-            <li><strong>Cooler temperatures appear in shades of blue,</strong> while <strong>warmer areas turn red.</strong></li>
-            <li>As dehydration progresses, <strong>body temperature increases dynamically.</strong></li>
-        </ul>
-    
-        <h3>5️⃣ Hover Over a Body Part</h3>
-        <ul>
-            <li><strong>Hover over the ear, chest, hands, or feet</strong> to see a <strong>tooltip graph</strong> of that body part’s <strong>temperature trend over time.</strong></li>
-            <li>The tooltip will display a <strong>line graph</strong> tracking temperature changes for that specific area.</li>
-        </ul>
-    
-        <h2>How Dehydration Levels Are Estimated</h2>
-        <p>Dehydration is estimated using <strong>body weight loss as a proxy for total body water (TBW) loss:</strong></p>
-        <pre>
+        <div id="info-section">
+
+            <h2>Overview</h2>
+            <p>The aim of this interactive visualization is to help users explore the relationship between
+                <strong>dehydration levels, body temperature, and running speed</strong> over time using real data. The
+                visualization dynamically updates based on selected individuals and time intervals, showing changes in
+                <strong>hydration levels</strong> and <strong>body temperature distribution</strong> across different
+                body parts.
+            </p>
+
+            <h2>Data Source</h2>
+            <p>The data comes from the <strong>PhysioNet Quantitative Dehydration Estimation dataset</strong>, which
+                records <strong>physiological changes during prolonged physical exertion</strong>. Each measurement was
+                taken at an interval of <strong>15 minutes</strong> and includes:</p>
+            <ul>
+                <li><strong>Body weight measurements</strong> using a high-precision scale.</li>
+                <li><strong>Body temperature readings</strong> from eight key areas:
+                    <ul>
+                        <li>Ear</li>
+                        <li>Left & Right Hand</li>
+                        <li>Left & Right Legs</li>
+                        <li>Left & Right Foot</li>
+                        <li>Chest</li>
+                    </ul>
+                </li>
+                <li><strong>Dehydration tracking</strong> by loss in weight using <strong>Kern DE 150K2D [kg]</strong>
+                    (difference in body weight is assumed to be equal to total body water loss).</li>
+            </ul>
+
+            <h2>How to Use This Dashboard</h2>
+
+            <h3>1️⃣ Select a Subject</h3>
+            <p>Use the <strong>slider</strong> to select an avatar of your liking. The demographic details of each
+                subject are listed in the description box.</p>
+
+            <h3>2️⃣ Adjust the Time Slider</h3>
+            <ul>
+                <li>Move the <strong>time slider</strong> to see changes in hydration level and temperature over the
+                    <strong>8 time intervals.</strong>
+                </li>
+                <li>The <strong>hydration level (body weight)</strong> and <strong>body temperature</strong> will update
+                    in real time.</li>
+            </ul>
+
+            <h3>3️⃣ Observe the Change in Water Levels</h3>
+            <ul>
+                <li>The <strong>water bottle represents hydration levels.</strong></li>
+                <li>As dehydration progresses, <strong>the water level decreases.</strong></li>
+            </ul>
+
+            <h3>4️⃣ Body Temperature Changes Over Time</h3>
+            <ul>
+                <li>The <strong>human figure represents body temperature distribution.</strong></li>
+                <li><strong>Cooler temperatures appear in shades of blue,</strong> while <strong>warmer areas turn
+                        red.</strong></li>
+                <li>As dehydration progresses, <strong>body temperature increases dynamically.</strong></li>
+            </ul>
+
+            <h3>5️⃣ Hover Over a Body Part</h3>
+            <ul>
+                <li><strong>Hover over the ear, chest, hands, or feet</strong> to see a <strong>tooltip graph</strong>
+                    of that body part’s <strong>temperature trend over time.</strong></li>
+                <li>The tooltip will display a <strong>line graph</strong> tracking temperature changes for that
+                    specific area.</li>
+            </ul>
+
+            <h2>How Dehydration Levels Are Estimated</h2>
+            <p>Dehydration is estimated using <strong>body weight loss as a proxy for total body water (TBW)
+                    loss:</strong></p>
+            <pre>
             Dehydration Level = [(Initial Body Weight - Current Body Weight) * 100] / Initial Body Weight
         </pre>
-        <ul>
-            <li><strong>More dehydration = lower body weight = lower water level in the bottle.</strong></li>
-            <li><em>This method is widely used in medical research to track hydration status.</em></li>
-        </ul>
-    
-        <h2>Why This Matters</h2>
-        <ul>
-            <li><strong>Dehydration affects both hydration levels and thermoregulation.</strong></li>
-            <li>Understanding these changes is crucial for <strong>athletes, healthcare professionals, and researchers.</strong></li>
-            <li>This visualization <strong>makes it easier to interpret how dehydration impacts the human body in real time.</strong></li>
-        </ul>
-    
-        <p><strong>Use this tool to interactively explore the connection between hydration and body temperature!</strong></p>
-    </div>
-    
+            <ul>
+                <li><strong>More dehydration = lower body weight = lower water level in the bottle.</strong></li>
+                <li><em>This method is widely used in medical research to track hydration status.</em></li>
+            </ul>
 
-    <!-- Toggle container -->
-    <div class="toggle-switch">
-        <!-- The sliding background highlight -->
-        <div class="toggle-background"></div>
-        <!-- Toggle buttons: each has a data-participant attribute -->
-        <div class="toggle-option selected" data-participant="2">Noah</div>
-        <div class="toggle-option" data-participant="7">Jacob</div>
-        <div class="toggle-option" data-participant="8">Michael</div>
-    </div>
+            <h2>Why This Matters</h2>
+            <ul>
+                <li><strong>Dehydration affects both hydration levels and thermoregulation.</strong></li>
+                <li>Understanding these changes is crucial for <strong>athletes, healthcare professionals, and
+                        researchers.</strong></li>
+                <li>This visualization <strong>makes it easier to interpret how dehydration impacts the human body in
+                        real time.</strong></li>
+            </ul>
 
-
-    <!-- Data box showing participant info -->
-    <div id="data-box">
-        <!-- Data will be inserted here -->
-    </div>
-
-    <!-- Slider for running interval selection -->
-    <div id="slider-container">
-        <label for="interval-slider">Running Interval:</label>
-        <input type="range" id="interval-slider" min="0" max="8" value="0" step="1">
-        <span id="interval-value"></span>
-    </div>
-
-
-    <!-- The SVG code from your human_body.svg (inline or embedded) -->
-
-    <div id="visualization-container">
-        <!-- Cup (Water Bottle) on the left -->
-        <div id='water-container'>
-            <svg id="axis" width="50" height="550" ></svg>
-            <div id="water-bottle" class="cup">
-                <div class="wave"></div>
-            </div>
+            <p><strong>Use this tool to interactively explore the connection between hydration and body
+                    temperature!</strong></p>
         </div>
 
-        <svg id="human-svg" viewBox="0 0 300 500" width="300" height="600">
-            <circle id="head" cx="150" cy="70" r="40" />
-            <rect id="torso" x="110" y="120" width="80" height="150" />
-            <rect id="leftArm" x="60" y="105" width="25" height="140" />
-            <rect id="rightArm" x="215" y="105" width="25" height="140" />
-            <rect id="leftLeg" x="110" y="280" width="30" height="150" />
-            <rect id="rightLeg" x="160" y="280" width="30" height="150" />
-            <ellipse id="leftFoot" cx="125" cy="440" rx="20" ry="15" />
-            <ellipse id="rightFoot" cx="175" cy="440" rx="20" ry="15" />
-        </svg>
-    </div>
+        <div class="team-bar">
+            <a href="" target="_blank">Angela Shen</a>
+            <a href="" target="_blank">Dhanvi Patel</a>
+            <a href="https://hsflores.dev/" target="_blank">Hunter Flores</a>
+            <a href="" target="_blank">Jianyun Ye</a>
+        </div>
 
-    <!-- Tooltip for showing temperature trends -->
-    <div id="temperature-tooltip" class="tooltip hidden">
-        <h4 id="tooltip-title">Temperature Trend</h4>
-        <svg id="tooltip-chart" width="250" height="150"></svg>
-    </div>
+        <!-- Toggle container -->
+        <div class="toggle-switch">
+            <!-- The sliding background highlight -->
+            <div class="toggle-background"></div>
+            <!-- Toggle buttons: each has a data-participant attribute -->
+            <div class="toggle-option selected" data-participant="2">Noah</div>
+            <div class="toggle-option" data-participant="7">Jacob</div>
+            <div class="toggle-option" data-participant="8">Michael</div>
+        </div>
 
 
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="script.js"></script>
+        <!-- Data box showing participant info -->
+        <div id="data-box">
+            <!-- Data will be inserted here -->
+        </div>
+
+        <!-- Slider for running interval selection -->
+        <div id="slider-container">
+            <label for="interval-slider">Running Interval:</label>
+            <input type="range" id="interval-slider" min="0" max="8" value="0" step="1">
+            <span id="interval-value"></span>
+        </div>
+
+
+        <!-- The SVG code from your human_body.svg (inline or embedded) -->
+
+        <div id="visualization-container">
+            <!-- Cup (Water Bottle) on the left -->
+            <div id='water-container'>
+                <svg id="axis" width="50" height="550"></svg>
+                <div id="water-bottle" class="cup">
+                    <div class="wave"></div>
+                </div>
+            </div>
+
+            <svg id="human-svg" viewBox="0 0 300 500" width="300" height="600">
+                <circle id="head" cx="150" cy="70" r="40" />
+                <rect id="torso" x="110" y="120" width="80" height="150" />
+                <rect id="leftArm" x="60" y="105" width="25" height="140" />
+                <rect id="rightArm" x="215" y="105" width="25" height="140" />
+                <rect id="leftLeg" x="110" y="280" width="30" height="150" />
+                <rect id="rightLeg" x="160" y="280" width="30" height="150" />
+                <ellipse id="leftFoot" cx="125" cy="440" rx="20" ry="15" />
+                <ellipse id="rightFoot" cx="175" cy="440" rx="20" ry="15" />
+            </svg>
+        </div>
+
+        <!-- Tooltip for showing temperature trends -->
+        <div id="temperature-tooltip" class="tooltip hidden">
+            <h4 id="tooltip-title">Temperature Trend</h4>
+            <svg id="tooltip-chart" width="250" height="150"></svg>
+        </div>
+
+
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script src="script.js"></script>
 </body>
 
 </html>
