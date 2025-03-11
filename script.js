@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dataBox.innerHTML = `
             <p><strong>Age:</strong> ${staticRow["age [years]"]} years</p>
             <p><strong>Speed:</strong> ${staticRow["running speed [km/h]"]} km/h</p>
-            <p><strong>Weight:</strong> ${dynamicRow["weight measured using Kern DE 150K2D [kg]"]} kg</p>
+            <p><strong>Hydration Proxy:</strong> ${dynamicRow["weight measured using Kern DE 150K2D [kg]"]}</p>
             <p><strong>Interval:</strong> ${selectedInterval}</p>
         `;
 
