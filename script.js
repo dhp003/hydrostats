@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let baselineWeight;          // Store the static (baseline) weight in kg
 
     // Set the maximum expected weight loss in ounces that represents a full cup.
-    const maxOuncesLoss = 120;  // Adjust this value based on your scale
+    const maxOuncesLoss = 100;  // Adjust this value based on your scale
+    const waterToWeightRatio = 0.70;
 
     // Color mapping for temperatures
     function getColor(temp) {
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // At baseline, lost weight is zero so the cup remains empty.
     function updateWaterCup(currentWeight) {
         const lostKg = baselineWeight - currentWeight;
-        const lostOunces = lostKg * 35.274 * 0.75;
+        const lostOunces = lostKg * 35.274 * waterToWeightRatio;
         let fillPercent = (lostOunces / maxOuncesLoss) * 100;
         fillPercent = Math.max(0, Math.min(fillPercent, 100));
         waveEl.style.height = `${fillPercent}%`;
@@ -75,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Calculate the current weight and lost ounces.
         const currentWeight = +dynamicRow["weight measured using Kern DE 150K2D [kg]"];
         const lostKg = baselineWeight - currentWeight;
-        const lostOunces = lostKg * 35.274;
+        const lostOunces = lostKg * 35.274 * waterToWeightRatio;
     
         // Update the data box with additional stat for lost ounces.
         dataBox.innerHTML = `
