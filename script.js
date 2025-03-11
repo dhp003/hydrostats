@@ -56,10 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
         let fillPercent = (lostOunces / maxOuncesLoss) * 100;
         fillPercent = Math.max(0, Math.min(fillPercent, 100));
         waveEl.style.height = `${fillPercent}%`;
-
-        // Update the stat above the cup
-        const statEl = document.getElementById("lost-ounces-stat");
-        statEl.textContent = `~${lostOunces.toFixed(2)} oz lost`;
     }
 
 
@@ -86,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <p><strong>Age:</strong> ${staticRow["age [years]"]} years</p>
             <p><strong>Speed:</strong> ${staticRow["running speed [km/h]"]} km/h</p>
             <p><strong>Weight:</strong> ${currentWeight} kg</p>
-            <p><strong>Lost Ounces:</strong> ${lostOunces.toFixed(2)} oz</p>
+            <p><strong>Water Lost Proxy:</strong> ${lostOunces.toFixed(2)} oz</p>
             <p><strong>Interval:</strong> ${selectedInterval}</p>
         `;
     

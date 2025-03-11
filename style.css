@@ -58,7 +58,7 @@ body {
     padding: 10px;
     border: 1px solid hsl(0, 0%, 87%);
     background-color: #f9f9f9;
-    width: 200px;
+    width: 250px;
     text-align: center;
     filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.2));
     border-radius: 20px;
@@ -367,10 +367,4 @@ body {
 .team-bar a:hover {
     color: #ffffff;
     transform: scale(1.05);
-}
-
-.stat {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
 }
