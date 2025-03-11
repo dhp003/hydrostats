@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let selectedInterval = 0;    // Default running interval
 
     // Define weight mapping (adjust these based on your data)
-    const minWeight = 70;  // Minimum expected weight (kg)
+    const minWeight = 0;  // Minimum expected weight (kg)
     const maxWeight = 90;  // Maximum expected weight (kg)
 
     // Color mapping for temperatures
@@ -39,9 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const svg = d3.select("#axis");
         const yScale = d3.scaleLinear()
             .domain([minWeight, maxWeight])
-            .range([250, 0]);
+            .range([500, 0]);
 
-        console.log(minWeight, maxWeight);
         svg.append('g')
             .attr('class', 'gridlines')
             .attr('transform', `translate(${50}, 32)`)
@@ -69,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.warn("No static data found for participant", participantId);
             return;
         }
-        
+
         // Get the dynamic row for the current interval (or fall back to staticRow).
         const dynamicRow = globalData.find(d => +d.id === participantId && +d["running interval"] === selectedInterval) || staticRow;
 
@@ -86,17 +85,17 @@ document.addEventListener("DOMContentLoaded", function () {
         updateWaterCup(dynamicWeight);
 
         // Parse temperature values from dynamicRow.
-        const earTemp   = +dynamicRow["temperature ear [degree C]"];
+        const earTemp = +dynamicRow["temperature ear [degree C]"];
         const chestTemp = +dynamicRow["temperature chest [degree C]"];
-        const backTemp  = +dynamicRow["temperature back [degree C]"];
-        const leftHand  = +dynamicRow["temperature left hand [degree C]"];
+        const backTemp = +dynamicRow["temperature back [degree C]"];
+        const leftHand = +dynamicRow["temperature left hand [degree C]"];
         const rightHand = +dynamicRow["temperature right hand [degree C]"];
-        const leftFoot  = +dynamicRow["temperature left foot [degree C]"];
+        const leftFoot = +dynamicRow["temperature left foot [degree C]"];
         const rightFoot = +dynamicRow["temperature right foot [degree C]"];
-        const upperArm  = +dynamicRow["temperature upper arm [degree C]"];
-        const lowerArm  = +dynamicRow["temperature lower arm [degree C]"];
-        const upperLeg  = +dynamicRow["temperature upper leg [degree C]"];
-        const lowerLeg  = +dynamicRow["temperature lower leg [degree C]"];
+        const upperArm = +dynamicRow["temperature upper arm [degree C]"];
+        const lowerArm = +dynamicRow["temperature lower arm [degree C]"];
+        const upperLeg = +dynamicRow["temperature upper leg [degree C]"];
+        const lowerLeg = +dynamicRow["temperature lower leg [degree C]"];
 
         // Update human SVG colors based on temperature values.
         d3.select("#head").attr("fill", getColor(earTemp));
@@ -132,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "running speed [km/h]": +d["running speed [km/h]"]
         }));
 
-        
+
         updateChart(selectedParticipant);
 
         // tooltip
@@ -140,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Listening to mouseovers on body parts 
         d3.selectAll("#human-svg rect, #human-svg circle, #human-svg ellipse")
-            .on("mouseenter", function(event) {
+            .on("mouseenter", function (event) {
                 let partId = d3.select(this).attr("id");
 
                 let partNameMapping = {
@@ -168,76 +167,95 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 // Get the temperature data of the currently selected participant
                 let temperatureData = globalData.filter(d => d.id === selectedParticipant)
-                                                .map(d => ({ interval: d["running interval"], temp: d[tempField] }));
+                    .map(d => ({ interval: d["running interval"], temp: d[tempField] }));
 
                 // Call the function to draw the line chart.
                 drawTooltipChart(temperatureData);
             })
 
-            .on("mousemove", function(event) {
-                tooltip
-                    .style("left", `${event.pageX + 10}px`)
-                    .style("top", `${event.pageY + 10}px`);
+            .on("mousemove", function (event) {
+                const tooltipEl = tooltip.node();
+                const tooltipWidth = tooltipEl.offsetWidth;
+                const tooltipHeight = tooltipEl.offsetHeight;
+                const offset = 10;
+
+                // Calculate default positions.
+                let left = event.pageX + offset;
+                let top = event.pageY + offset;
+
+                // Check right edge of window.
+                if (left + tooltipWidth > window.innerWidth) {
+                    left = event.pageX - tooltipWidth - offset;
+                }
+
+                // Check bottom edge of window.
+                if (top + tooltipHeight > window.innerHeight) {
+                    top = event.pageY - tooltipHeight - offset;
+                }
+
+                tooltip.style("left", `${left}px`)
+                    .style("top", `${top}px`);
             })
-            .on("mouseleave", function() {
+
+            .on("mouseleave", function () {
                 tooltip.classed("hidden", true).classed("visible", false);
             });
     });
 
 
-            // Update slider display and chart when the slider changes.
-            intervalSlider.addEventListener("input", function () {
-                selectedInterval = +this.value;
-                intervalValueDisplay.textContent = this.value;
-                updateChart(selectedParticipant);
-            });
+    // Update slider display and chart when the slider changes.
+    intervalSlider.addEventListener("input", function () {
+        selectedInterval = +this.value;
+        intervalValueDisplay.textContent = this.value;
+        updateChart(selectedParticipant);
+    });
 
-            // Update toggle background on window resize.
-            window.addEventListener("resize", updateBackground);
+    // Update toggle background on window resize.
+    window.addEventListener("resize", updateBackground);
+    updateBackground();
+
+    // Set up click handlers for participant toggle options.
+    toggleOptions.forEach(option => {
+        option.addEventListener("click", function () {
+            toggleOptions.forEach(btn => btn.classList.remove("selected"));
+            this.classList.add("selected");
+
+            selectedParticipant = parseInt(this.dataset.participant, 10);
             updateBackground();
-
-            // Set up click handlers for participant toggle options.
-            toggleOptions.forEach(option => {
-                option.addEventListener("click", function () {
-                    toggleOptions.forEach(btn => btn.classList.remove("selected"));
-                    this.classList.add("selected");
-
-                    selectedParticipant = parseInt(this.dataset.participant, 10);
-                    updateBackground();
-                    updateChart(selectedParticipant);
-                });
-            });
+            updateChart(selectedParticipant);
+        });
+    });
 });
 
 function drawTooltipChart(temperatureData) {
     let svg = d3.select("#tooltip-chart");
     svg.selectAll("*").remove();
-    
+
     let width = 250, height = 150;
     let margin = { top: 20, right: 20, bottom: 30, left: 40 };
-    
+
     let xScale = d3.scaleLinear()
         .domain([0, 8])
         .range([margin.left, width - margin.right]);
-    
+
     let yScale = d3.scaleLinear()
-        .domain([d3.min(temperatureData, d => d.temp) - 1, d3.max(temperatureData, d => d.temp) + 1])
+        .domain([20, 40])
         .range([height - margin.bottom, margin.top]);
-    
+
     let line = d3.line()
         .x(d => xScale(d.interval))
         .y(d => yScale(d.temp));
-    
+
     // X-axis
     svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
-        .call(d3.axisBottom(xScale).tickValues([0,1,2,3,4,5,6,7,8]));
+        .call(d3.axisBottom(xScale).tickValues([0, 1, 2, 3, 4, 5, 6, 7, 8]));
 
     // Y-axis
     svg.append("g")
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(yScale).ticks(5));
-    
+
     // line
     svg.append("path")
         .datum(temperatureData)
@@ -245,7 +263,7 @@ function drawTooltipChart(temperatureData) {
         .attr("stroke", "#8a2be2")
         .attr("stroke-width", 2)
         .attr("d", line);
-    
+
     // point
     svg.selectAll("circle")
         .data(temperatureData)
@@ -254,5 +272,4 @@ function drawTooltipChart(temperatureData) {
         .attr("cy", d => yScale(d.temp))
         .attr("r", 4)
         .attr("fill", "#ff8c00");
-    }
-    
+}
