@@ -9,10 +9,10 @@ document.addEventListener("DOMContentLoaded", function () {
     let globalData = [];
     let selectedParticipant = 2; // Default participant
     let selectedInterval = 0;    // Default running interval
+    let baselineWeight;          // Store the static (baseline) weight in kg
 
-    // Define weight mapping (adjust these based on your data)
-    const minWeight = 0;  // Minimum expected weight (kg)
-    let maxWeight;  // Maximum expected weight (kg)
+    // Set the maximum expected weight loss in ounces that represents a full cup.
+    const maxOuncesLoss = 120;  // Adjust this value based on your scale
 
     // Color mapping for temperatures
     function getColor(temp) {
@@ -34,60 +34,66 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleBackground.style.transform = `translateX(${buttonLeft - extraPadding / 2}px)`;
     }
 
-    //Create y-axis for the water-cup
+    // Create y-axis for the water cup (if needed for your visualization)
     function makeAxis() {
         const svg = d3.select("#axis");
-        svg.selectAll("*").remove();  // Clear any existing axis elements
+        svg.selectAll("*").remove();
         const yScale = d3.scaleLinear()
-            .domain([minWeight, maxWeight])
+            .domain([0, maxOuncesLoss])
             .range([500, 0]);
 
         svg.append('g')
             .attr('class', 'gridlines')
-            .attr('transform', `translate(${50}, 32)`)
+            .attr('transform', `translate(50, 32)`)
             .call(d3.axisLeft().scale(yScale));
     }
 
-
-    // Update the cup fill level (the .wave element) based on dynamic weight.
-    // Here we map the weight to a percentage fill of the cup.
-    function updateWaterCup(weight) {
-        // Clamp weight to our expected range.
-        const clampedWeight = Math.max(minWeight, Math.min(maxWeight, weight));
-        // Calculate fill percentage: 0% at minWeight, 100% at maxWeight.
-        const fillPercent = ((clampedWeight - minWeight) / (maxWeight - minWeight)) * 100;
-        // Set the .wave element height accordingly.
+    // Update the cup fill based on the lost weight (in ounces).
+    // At baseline, lost weight is zero so the cup remains empty.
+    function updateWaterCup(currentWeight) {
+        const lostKg = baselineWeight - currentWeight;
+        const lostOunces = lostKg * 35.274 * 0.75;
+        let fillPercent = (lostOunces / maxOuncesLoss) * 100;
+        fillPercent = Math.max(0, Math.min(fillPercent, 100));
         waveEl.style.height = `${fillPercent}%`;
+
+        // Update the stat above the cup
+        const statEl = document.getElementById("lost-ounces-stat");
+        statEl.textContent = `~${lostOunces.toFixed(2)} oz lost`;
     }
 
-    // Update the SVG visualization, cup fill, and data box.
+
     function updateChart(participantId) {
-        // Get the static row (running interval 0) for static info.
+        // Get the static row (interval 0) for baseline weight.
         const staticRow = globalData.find(d => +d.id === participantId && +d["running interval"] === 0);
         if (!staticRow) {
             console.warn("No static data found for participant", participantId);
             return;
         }
-        maxWeight = staticRow["weight measured using Kern DE 150K2D [kg]"];
+        baselineWeight = staticRow["weight measured using Kern DE 150K2D [kg]"];
         makeAxis();
-
-
-        // Get the dynamic row for the current interval (or fall back to staticRow).
+    
+        // Get the dynamic row for the current interval (fall back to staticRow if not found).
         const dynamicRow = globalData.find(d => +d.id === participantId && +d["running interval"] === selectedInterval) || staticRow;
-
-        // Update the data box (using static info for age and speed, dynamic weight).
+    
+        // Calculate the current weight and lost ounces.
+        const currentWeight = +dynamicRow["weight measured using Kern DE 150K2D [kg]"];
+        const lostKg = baselineWeight - currentWeight;
+        const lostOunces = lostKg * 35.274;
+    
+        // Update the data box with additional stat for lost ounces.
         dataBox.innerHTML = `
             <p><strong>Age:</strong> ${staticRow["age [years]"]} years</p>
             <p><strong>Speed:</strong> ${staticRow["running speed [km/h]"]} km/h</p>
-            <p><strong>Weight:</strong> ${dynamicRow["weight measured using Kern DE 150K2D [kg]"]} kg</p>
+            <p><strong>Weight:</strong> ${currentWeight} kg</p>
+            <p><strong>Lost Ounces:</strong> ${lostOunces.toFixed(2)} oz</p>
             <p><strong>Interval:</strong> ${selectedInterval}</p>
         `;
-
-        // Update the cup fill based on dynamic weight.
-        const dynamicWeight = +dynamicRow["weight measured using Kern DE 150K2D [kg]"];
-        updateWaterCup(dynamicWeight);
-
-        // Parse temperature values from dynamicRow.
+    
+        // Update the cup fill based on the weight lost.
+        updateWaterCup(currentWeight);
+    
+        // Update the human SVG colors based on temperature values.
         const earTemp = +dynamicRow["temperature ear [degree C]"];
         const chestTemp = +dynamicRow["temperature chest [degree C]"];
         const backTemp = +dynamicRow["temperature back [degree C]"];
@@ -99,8 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const lowerArm = +dynamicRow["temperature lower arm [degree C]"];
         const upperLeg = +dynamicRow["temperature upper leg [degree C]"];
         const lowerLeg = +dynamicRow["temperature lower leg [degree C]"];
-
-        // Update human SVG colors based on temperature values.
+    
         d3.select("#head").attr("fill", getColor(earTemp));
         const avgTorso = (chestTemp + backTemp) / 2;
         d3.select("#torso").attr("fill", getColor(avgTorso));
@@ -112,11 +117,12 @@ document.addEventListener("DOMContentLoaded", function () {
         d3.select("#leftFoot").attr("fill", getColor(leftFoot));
         d3.select("#rightFoot").attr("fill", getColor(rightFoot));
     }
+    
 
-    // Load the CSV data once.
+    // Load the CSV data.
     d3.csv("data.csv").then(function (data) {
         globalData = data.map(d => ({
-            id: +d.id, // convert to number
+            id: +d.id,
             "running interval": +d["running interval"],
             "temperature ear [degree C]": +d["temperature ear [degree C]"],
             "temperature chest [degree C]": +d["temperature chest [degree C]"],
@@ -134,19 +140,18 @@ document.addEventListener("DOMContentLoaded", function () {
             "running speed [km/h]": +d["running speed [km/h]"]
         }));
 
-        // Set maxWeight to the initial weight for the default participant.
+        // Set the baseline weight for the default participant.
         const staticRow = globalData.find(d => d.id === selectedParticipant && d["running interval"] === 0);
         if (staticRow) {
-            maxWeight = staticRow["weight measured using Kern DE 150K2D [kg]"];
+            baselineWeight = staticRow["weight measured using Kern DE 150K2D [kg]"];
         }
 
         makeAxis();
         updateChart(selectedParticipant);
 
-        // tooltip
+        // Tooltip setup for temperature trend visualization.
         const tooltip = d3.select("#temperature-tooltip");
 
-        // Listening to mouseovers on body parts 
         d3.selectAll("#human-svg rect, #human-svg circle, #human-svg ellipse")
             .on("mouseenter", function (event) {
                 let partId = d3.select(this).attr("id");
@@ -176,7 +181,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 let tempField = partNameMapping[partId];
                 if (!tempField) return;
 
-                // set tooltip position
                 tooltip
                     .classed("hidden", false)
                     .classed("visible", true)
@@ -185,43 +189,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 d3.select("#tooltip-title").text(`Temperature Trend: ${partNames[partId] || partId}`);
 
-                // Get the temperature data of the currently selected participant
                 let temperatureData = globalData.filter(d => d.id === selectedParticipant)
                     .map(d => ({ interval: d["running interval"], temp: d[tempField] }));
 
-                // Call the function to draw the line chart.
                 drawTooltipChart(temperatureData);
             })
-
             .on("mousemove", function (event) {
                 const tooltipEl = tooltip.node();
                 const tooltipWidth = tooltipEl.offsetWidth;
                 const tooltipHeight = tooltipEl.offsetHeight;
                 const offset = 10;
-
-                // Calculate default positions.
                 let left = event.pageX + offset;
                 let top = event.pageY + offset;
-
-                // Check right edge of window.
                 if (left + tooltipWidth > window.innerWidth) {
                     left = event.pageX - tooltipWidth - offset;
                 }
-
-                // Check bottom edge of window.
                 if (top + tooltipHeight > window.innerHeight) {
                     top = event.pageY - tooltipHeight - offset;
                 }
-
                 tooltip.style("left", `${left}px`)
                     .style("top", `${top}px`);
             })
-
             .on("mouseleave", function () {
                 tooltip.classed("hidden", true).classed("visible", false);
             });
     });
-
 
     // Update slider display and chart when the slider changes.
     intervalSlider.addEventListener("input", function () {
@@ -230,7 +222,6 @@ document.addEventListener("DOMContentLoaded", function () {
         updateChart(selectedParticipant);
     });
 
-    // Update toggle background on window resize.
     window.addEventListener("resize", updateBackground);
     updateBackground();
 
@@ -266,17 +257,14 @@ function drawTooltipChart(temperatureData) {
         .x(d => xScale(d.interval))
         .y(d => yScale(d.temp));
 
-    // X-axis
     svg.append("g")
         .attr("transform", `translate(0, ${height - margin.bottom})`)
         .call(d3.axisBottom(xScale).tickValues([0, 1, 2, 3, 4, 5, 6, 7, 8]));
 
-    // Y-axis
     svg.append("g")
         .attr("transform", `translate(${margin.left}, 0)`)
         .call(d3.axisLeft(yScale).ticks(5));
 
-    // line
     svg.append("path")
         .datum(temperatureData)
         .attr("fill", "none")
@@ -284,7 +272,6 @@ function drawTooltipChart(temperatureData) {
         .attr("stroke-width", 2)
         .attr("d", line);
 
-    // point
     svg.selectAll("circle")
         .data(temperatureData)
         .enter().append("circle")
