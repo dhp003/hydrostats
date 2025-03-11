@@ -294,3 +294,31 @@ body {
         padding: 15px;
     }
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap');
+
+#welcome-header {
+    text-align: center;
+    font-family: 'Orbitron', sans-serif; /* Futuristic, sleek font */
+    font-size: 42px;
+    font-weight: 800;
+    margin-top: 30px;
+    padding: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+#welcome-header h1 {
+    color: transparent; /* Makes the text hollow */
+    -webkit-text-stroke: 1.5px #66c2ff; /* Softer outline effect */
+    text-stroke: 1.5px #66c2ff;
+    text-shadow: 0 0 6px rgba(102, 194, 255, 0.5), 0 0 10px rgba(51, 153, 255, 0.3); /* Softer glow */
+}
+
+#welcome-header span {
+    color: transparent;
+    -webkit-text-stroke: 1.5px #559bd3; /* Slightly darker blue for contrast */
+    text-stroke: 1.5px #559bd3;
+    text-shadow: 0 0 6px rgba(85, 155, 211, 0.5), 0 0 10px rgba(45, 116, 187, 0.3);
+}
+
