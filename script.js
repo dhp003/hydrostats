@@ -12,12 +12,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Define weight mapping (adjust these based on your data)
     const minWeight = 0;  // Minimum expected weight (kg)
-    const maxWeight = 90;  // Maximum expected weight (kg)
+    let maxWeight;  // Maximum expected weight (kg)
 
     // Color mapping for temperatures
     function getColor(temp) {
-        if (temp < 30) return "#3d85c6";
-        if (temp < 33) return "#9fc5e8";
+        if (temp < 28) return "#3d85c6";
+        if (temp < 32) return "#9fc5e8";
         if (temp < 36) return "#e06666";
         return "#cc0000";
     }
@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //Create y-axis for the water-cup
     function makeAxis() {
         const svg = d3.select("#axis");
+        svg.selectAll("*").remove();  // Clear any existing axis elements
         const yScale = d3.scaleLinear()
             .domain([minWeight, maxWeight])
             .range([500, 0]);
@@ -47,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
             .call(d3.axisLeft().scale(yScale));
     }
 
-    makeAxis();
 
     // Update the cup fill level (the .wave element) based on dynamic weight.
     // Here we map the weight to a percentage fill of the cup.
@@ -68,6 +68,9 @@ document.addEventListener("DOMContentLoaded", function () {
             console.warn("No static data found for participant", participantId);
             return;
         }
+        maxWeight = staticRow["weight measured using Kern DE 150K2D [kg]"];
+        makeAxis();
+
 
         // Get the dynamic row for the current interval (or fall back to staticRow).
         const dynamicRow = globalData.find(d => +d.id === participantId && +d["running interval"] === selectedInterval) || staticRow;
@@ -131,7 +134,13 @@ document.addEventListener("DOMContentLoaded", function () {
             "running speed [km/h]": +d["running speed [km/h]"]
         }));
 
+        // Set maxWeight to the initial weight for the default participant.
+        const staticRow = globalData.find(d => d.id === selectedParticipant && d["running interval"] === 0);
+        if (staticRow) {
+            maxWeight = staticRow["weight measured using Kern DE 150K2D [kg]"];
+        }
 
+        makeAxis();
         updateChart(selectedParticipant);
 
         // tooltip
@@ -153,6 +162,17 @@ document.addEventListener("DOMContentLoaded", function () {
                     "rightFoot": "temperature right foot [degree C]"
                 };
 
+                const partNames = {
+                    head: "Ear",
+                    torso: "Chest/Back",
+                    leftArm: "Left Hand",
+                    rightArm: "Right Hand",
+                    leftLeg: "Left Leg",
+                    rightLeg: "Right Leg",
+                    leftFoot: "Left Foot",
+                    rightFoot: "Right Foot"
+                };
+
                 let tempField = partNameMapping[partId];
                 if (!tempField) return;
 
@@ -163,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     .style("left", `${event.pageX + 10}px`)
                     .style("top", `${event.pageY + 10}px`);
 
-                d3.select("#tooltip-title").text(`Temperature Trend: ${partId} (Interval ${selectedInterval})`);
+                d3.select("#tooltip-title").text(`Temperature Trend: ${partNames[partId] || partId}`);
 
                 // Get the temperature data of the currently selected participant
                 let temperatureData = globalData.filter(d => d.id === selectedParticipant)
