@@ -156,46 +156,34 @@ body {
     width: 100%;
     /* Height will be set dynamically (fill percentage) */
     height: 0%;
-    /* background: rgb(12, 10, 139); */
+    background: rgb(12, 10, 139); 
     /* box-shadow: inset 0 0 0 5px #000; */
     border-radius: 30px;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
 
-/* Remove the vertical "rise" animation */
-.wave:before,
-.wave:after {
-    content: '';
+.wave::before {
+    content: "";
     position: absolute;
+    left: 0;
+    top: -10px;
     width: 200%;
-    height: 200%;
-    top: 0;
-    /* Fixed top position */
-    left: 50%;
-    transform: translate(-50%, 0);
-    background: black;
-}
-
-.wave:before {
-    border-radius: 45%;
-    animation: animate 2.5s linear infinite;
-    background: rgb(0, 2, 145);
-}
-
-.wave:after {
-    border-radius: 40%;
-    animation: animate 2.5s linear infinite;
-    background: rgba(0, 0, 0, 0.5);
+    height: 20px;
+    background: rgba(12, 10, 139);
+    border-radius: 50%;
+    animation: animate 3s ease-in-out infinite;
 }
 
 @keyframes animate {
     0% {
-        transform: translate(-50%, 0) rotate(0deg);
+        transform: translateX(0);
     }
-
+    50% {
+        transform: translateX(-50%);
+    }
     100% {
-        transform: translate(-50%, 0) rotate(360deg);
+        transform: translateX(0);
     }
 }
 
