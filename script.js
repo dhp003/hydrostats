@@ -280,3 +280,12 @@ function drawTooltipChart(temperatureData) {
         .attr("r", 4)
         .attr("fill", "#ff8c00");
 }
+
+function getColor(temp) {
+    if (temp < 28) return "#287bc5";  // Very Cool
+    if (temp < 30) return "#59a4e8";  // Cool
+    if (temp < 32) return "#9fc5e8";  // Neutral
+    if (temp < 34) return "#FFA7B0";  // Warm
+    if (temp < 36) return "#FF7070";  // Hot
+    return "#cc0000";  // Very Hot
+}
