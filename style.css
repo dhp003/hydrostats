@@ -130,6 +130,17 @@ body {
     margin: 20px auto;
 }
 
+#interval-slider {
+    width: 350px;
+}
+
+#interval-value {
+    display: block;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 
 /* Cup styling for the water bottle */
 .cup {
@@ -233,7 +244,7 @@ body {
 #info-section {
     max-width: 900px;
     margin: 30px auto;
-    padding: 25px;
+    padding: 20px;
     font-family: Arial, sans-serif;
     line-height: 1.7;
     background-color: #f9f9f9;
@@ -314,8 +325,8 @@ body {
     /* Futuristic, sleek font */
     font-size: 42px;
     font-weight: 800;
-    margin-top: 30px;
-    padding: 20px;
+    margin-top: 0px;
+    padding: 10px;
     letter-spacing: 2px;
     text-transform: uppercase;
 }
@@ -367,4 +378,8 @@ body {
 .team-bar a:hover {
     color: #ffffff;
     transform: scale(1.05);
+}
+
+#heading {
+    margin-top: 40px;
 }

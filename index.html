@@ -16,6 +16,17 @@
         <h1>Welcome to <span>HydroStats</span></h1>
     </div>
 
+    <div id="info-section">
+    
+        <h2>Overview</h2>
+        <p>The aim of this interactive visualization is to help users explore the relationship between
+            <strong>dehydration levels, body temperature, and running speed</strong> over time using real data. The
+            visualization dynamically updates based on selected individuals and time intervals, showing changes in
+            <strong>hydration levels</strong> and <strong>body temperature distribution</strong> across different
+            body parts.
+        </p>
+    </div id="info-section">
+
         <!-- Toggle container -->
         <div class="toggle-switch">
             <!-- The sliding background highlight -->
@@ -36,10 +47,11 @@
 
         <!-- Slider for running interval selection -->
         <div id="slider-container">
-            <label for="interval-slider">Running Interval:</label>
-            <input type="range" id="interval-slider" min="0" max="8" value="0" step="1">
             <span id="interval-value"></span>
+            <input type="range" id="interval-slider" min="0" max="8" value="0" step="1">
         </div>
+
+        <h2 id="heading">How Much Water Do You Need During Cardio?</h1>
 
 
         <!-- The SVG code from your human_body.svg (inline or embedded) -->
@@ -51,17 +63,19 @@
                     <div class="wave"></div>
                 </div>
             </div>
-
-            <svg id="human-svg" viewBox="0 0 300 500" width="300" height="600">
-                <circle id="head" cx="150" cy="70" r="40" />
-                <rect id="torso" x="110" y="120" width="80" height="150" />
-                <rect id="leftArm" x="60" y="105" width="25" height="140" />
-                <rect id="rightArm" x="215" y="105" width="25" height="140" />
-                <rect id="leftLeg" x="110" y="280" width="30" height="150" />
-                <rect id="rightLeg" x="160" y="280" width="30" height="150" />
-                <ellipse id="leftFoot" cx="125" cy="440" rx="20" ry="15" />
-                <ellipse id="rightFoot" cx="175" cy="440" rx="20" ry="15" />
-            </svg>
+            
+            <div id="body-container">
+                <svg id="human-svg" viewBox="0 0 300 500" width="300" height="600">
+                    <circle id="head" cx="150" cy="70" r="40" />
+                    <rect id="torso" x="110" y="120" width="80" height="150" />
+                    <rect id="leftArm" x="60" y="105" width="25" height="140" />
+                    <rect id="rightArm" x="215" y="105" width="25" height="140" />
+                    <rect id="leftLeg" x="110" y="280" width="30" height="150" />
+                    <rect id="rightLeg" x="160" y="280" width="30" height="150" />
+                    <ellipse id="leftFoot" cx="125" cy="440" rx="20" ry="15" />
+                    <ellipse id="rightFoot" cx="175" cy="440" rx="20" ry="15" />
+                </svg>
+            </div>
         </div>
 
         <!-- Tooltip for showing temperature trends -->
@@ -70,37 +84,7 @@
             <svg id="tooltip-chart" width="250" height="150"></svg>
         </div>
 
-
-        <h2>How Much Water Do You Need During Cardio?</h1>
-
             <div id="info-section">
-    
-                <h2>Overview</h2>
-                <p>The aim of this interactive visualization is to help users explore the relationship between
-                    <strong>dehydration levels, body temperature, and running speed</strong> over time using real data. The
-                    visualization dynamically updates based on selected individuals and time intervals, showing changes in
-                    <strong>hydration levels</strong> and <strong>body temperature distribution</strong> across different
-                    body parts.
-                </p>
-    
-                <h2>Data Source</h2>
-                <p>The data comes from the <strong>PhysioNet Quantitative Dehydration Estimation dataset</strong>, which
-                    records <strong>physiological changes during prolonged physical exertion</strong>. Each measurement was
-                    taken at an interval of <strong>15 minutes</strong> and includes:</p>
-                <ul>
-                    <li><strong>Body weight measurements</strong> using a high-precision scale.</li>
-                    <li><strong>Body temperature readings</strong> from eight key areas:
-                        <ul>
-                            <li>Ear</li>
-                            <li>Left & Right Hand</li>
-                            <li>Left & Right Legs</li>
-                            <li>Left & Right Foot</li>
-                            <li>Chest</li>
-                        </ul>
-                    </li>
-                    <li><strong>Dehydration tracking</strong> by loss in weight using <strong>Kern DE 150K2D [kg]</strong>
-                        (difference in body weight is assumed to be 70% of the total body water loss).</li>
-                </ul>
     
                 <h2>How to Use This Dashboard</h2>
     
@@ -139,12 +123,32 @@
                         specific area.</li>
                 </ul>
     
+                <h2>Data Source</h2>
+                <p>The data comes from the <strong>PhysioNet Quantitative Dehydration Estimation dataset</strong>, which
+                    records <strong>physiological changes during prolonged physical exertion</strong>. Each measurement was
+                    taken at an interval of <strong>15 minutes</strong> and includes:</p>
+                <ul>
+                    <li><strong>Body weight measurements</strong> using a high-precision scale.</li>
+                    <li><strong>Body temperature readings</strong> from eight key areas:
+                        <ul>
+                            <li>Ear</li>
+                            <li>Left & Right Hand</li>
+                            <li>Left & Right Legs</li>
+                            <li>Left & Right Foot</li>
+                            <li>Chest</li>
+                        </ul>
+                    </li>
+                    <li><strong>Dehydration tracking</strong> by loss in weight using <strong>Kern DE 150K2D [kg]</strong>
+                        (difference in body weight is assumed to be 70% of the total body water loss).</li>
+                </ul>
+
                 <h2>How Dehydration Levels Are Estimated</h2>
                 <p>Dehydration is estimated using <strong>body weight loss as a proxy for total body water (TBW)
                         loss:</strong></p>
                 <pre>
                 Needed Hydration = (Initial Body Weight - Current Body Weight) * 35.274 * 0.70
             </pre>
+            
                 <ul>
                     <li><strong>More Exercise = More Weight loss = More Water Needed = Higher Water Level</strong></li>
                     <li><em>This method is widely used in medical research to track hydration status.</em></li>

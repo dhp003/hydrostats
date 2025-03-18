@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const dataBox = document.getElementById("data-box");
     const intervalSlider = document.getElementById("interval-slider");
     const intervalValueDisplay = document.getElementById("interval-value");
+    intervalValueDisplay.textContent = '0 minutes of running';
     const waveEl = document.querySelector(".wave");
 
     let globalData = [];
@@ -17,9 +18,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Color mapping for temperatures
     function getColor(temp) {
-        if (temp < 28) return "#3d85c6";
+        if (temp < 28) return "#287bc5";
+        if (temp < 30) return "#59a4e8";
         if (temp < 32) return "#9fc5e8";
-        if (temp < 36) return "#e06666";
+        if (temp < 34) return "#FFA7B0";
+        if (temp < 36) return "#FF7070";
         return "#cc0000";
     }
 
@@ -215,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Update slider display and chart when the slider changes.
     intervalSlider.addEventListener("input", function () {
         selectedInterval = +this.value;
-        intervalValueDisplay.textContent = this.value;
+        intervalValueDisplay.textContent = this.value * 15 + ' minutes of running';
         updateChart(selectedParticipant);
     });
 
